@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import './App.css';
 import CounterLayout from './CounterLayout';
 
-class App extends Component {
+export class App extends Component {
   render() {
     return (
       <div className="App">
@@ -14,4 +16,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect()(App);

@@ -1,29 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Counter from './Counter';
 import Increment from './Increment';
 
-class CounterLayout extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            count : this.props.count || 0
-        }
-    }
-
-    onIncrement() {
-        this.setState({
-            count : this.state.count + 1
-        });
-    }
-
+export class CounterLayout extends Component {
     render() {
-        const {count} = this.state;
+        const {count, onIncrement} = this.props;
         return <div>
             <p>You clicked <Counter count={count} /> times!</p>
-            <Increment onIncrement={() => this.onIncrement()} />
+            <Increment onIncrement={() => onIncrement()} />
         </div>;
     }
 }
 
-export default CounterLayout;
+const mapStateToProps = state => ({
+    count : state.counter
+});
+
+const mapDispatchToProps = dispatch => ({
+    onIncrement: () => dispatch({type : 'INCREASE'})
+});
+  
+export default connect(mapStateToProps, mapDispatchToProps)(CounterLayout);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import CounterLayout from './CounterLayout';
+import {CounterLayout} from './CounterLayout';
 
 describe("When rendering the counter layout", () => {
     let component;
@@ -22,23 +22,4 @@ describe("When rendering the counter layout", () => {
         expect(increment.length).not.toBe(0);
         expect(increment.prop('onIncrement')).not.toBe(undefined);
     });
-
-    describe("when incrementing", () => {
-        beforeEach((done) => {
-            const increment = component.find("Increment");
-            increment.simulate('increment');
-            process.nextTick(done);
-        });
-
-        it("should have increased the count", () => {
-            expect(component.state().count).toBe(1);
-        });
-
-        it("should have passed the right count to the counter component", () => {
-            const counter = component.find("Counter");
-            expect(counter.length).not.toBe(0);
-            expect(counter.prop('count')).toBe(1);
-        });
-    });
-
 })
