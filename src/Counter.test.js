@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import Counter from './Counter';
+import {Counter} from './Counter';
 
 describe("When rendering the counter", () => {
     let component;

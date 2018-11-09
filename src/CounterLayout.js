@@ -6,20 +6,11 @@ import Increment from './Increment';
 
 export class CounterLayout extends Component {
     render() {
-        const {count, onIncrement} = this.props;
         return <div>
-            <p>You clicked <Counter count={count} /> times!</p>
-            <Increment onIncrement={() => onIncrement()} />
+            <p>You clicked <Counter/> times!</p>
+            <Increment />
         </div>;
     }
 }
 
-const mapStateToProps = state => ({
-    count : state.counter
-});
-
-const mapDispatchToProps = dispatch => ({
-    onIncrement: () => dispatch({type : 'INCREASE'})
-});
-  
-export default connect(mapStateToProps, mapDispatchToProps)(CounterLayout);
+export default connect()(CounterLayout);

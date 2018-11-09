@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './Increment.css';
 
-class Increment extends Component {
+export class Increment extends Component {
     render() {
         const {onIncrement} = this.props;
         return <button onClick={onIncrement}>Increment</button>
     }
 }
 
-export default Increment;
+const mapDispatchToProps = dispatch => ({
+    onIncrement: () => dispatch({type : 'INCREASE'})
+});
+export default connect(() => ({}), mapDispatchToProps)(Increment);

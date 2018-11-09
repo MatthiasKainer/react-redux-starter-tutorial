@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import Increment from './Increment';
+import {Increment} from './Increment';
 
 describe("When having an incrementor", () => {
     const onIncrement = jest.fn();
