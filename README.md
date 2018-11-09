@@ -147,7 +147,22 @@ To connect a component we have to import the connect from redux, and export the 
 
 What happens is that instead of exporting the Component, we exporting the result of the call to connect with the component as argument. Behind the scene, a single prop called `store` will be passed to the component, and redux will know how to use it. 
 
-Note that even though the App does not do much with it, without connecting it the children of App would not have access to redux. To connect one component, all components above this component have to be connected as well.
+Note that even though the App does not do much with it, without connecting it the children of App would not have access to redux. To connect one component, all components above this component have to be connected as well. Also, with connecting it, the tests will fail. As the App.js is tested by rendering the application, we will have to add the same provider as we added to the index.js and the new test will look like this:
+
+```diff
+ import React from 'react';
+ import ReactDOM from 'react-dom';
+ import App from './App';
++import { Provider } from 'react-redux';
++import configureStore from './store';
+ 
+ it('renders without crashing', () => {
+   const div = document.createElement('div');
+-  ReactDOM.render(<App />, div);
++  ReactDOM.render(<Provider store={configureStore()}><App /></Provider>, div);
+   ReactDOM.unmountComponentAtNode(div);
+ });
+```
 
 Let's connect the CounterLayout component to see how we can use it:
 
@@ -200,7 +215,12 @@ A lot more things are changing here. Firstly, we no longer have to hold the `onI
 
 There is a major difference on how we call connect now - namely by passing two methods, `mapStateToProps` and `mapDispatchToProps`. Those are helper methods which will be used to map the application state to specific properties in our component (in our case, `state.counter` to `count`), and the latter will dispatch certain actions to the reducer, and add the function that invokes this as property to our Component. 
 
-Another thing you might have noticed is that we are also exporting the class directly. This is so that we can change the test to use the disconnected component. Also, we can simplify our tests to only test that the component renders correctly if the right properties are passed, instead of testing that the component changes if an action occurs. We already test the result of the function the reducer, and we don't have to test redux on our own as it is already sufficiently tested. 
+Another thing you might have noticed is that we are also exporting the class directly. This is so that we can change the test to use the disconnected component. Also, we can simplify our tests to only test that the component renders correctly if the right properties are passed, instead of testing that the component changes if an action occurs. We already test the result of the function the reducer, and we don't have to test redux on our own as it is already sufficiently tested as we had to in App.js. The change in this test is therefore (except for deleting a lot of tests) mainly:
+
+```diff
+-import CounterLayout from './CounterLayout';
++import {CounterLayout} from './CounterLayout';
+```
 
 ### What we gained
 
