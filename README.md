@@ -1,44 +1,27 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React Redux Starter Tutorial
 
-## Available Scripts
+This project is trying to show how to include redux into an existing project, what steps will be needed, and what benefits you get from it. For each step there is a commit on the branch `redux` that you can use to refer you.
 
-In the project directory, you can run:
+First however take a look at the existing parts. In our app is a simple counter that is split up over 3 components:
 
-### `npm start`
+* **Counter**: Display the current count
+* **Increment**: A styled button that can trigger an action
+* **CounterLayout**: A layout component that puts everything together and manages the state
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+When we look at those components, we can see the following shortcomings:
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+1. The CounterLayout has to know about the inner workings of the components - it has to know about the count, how to increase it and how to pass it to the inner components.
+2. The Increment component actually does not really have any power over incrementing anything. It's just called like this.
+3. The Counter is dependent to get passed in the right count from the outer components to display the correct count. Let's assume the requirement of a localized message, that would be wrapped in a *LocalizedCounterMessage* Component, which then holds the Counter. It would be required to get passed the current count from the outer component to pass it to the counter, even though it is not technically required to know about it. 
 
-### `npm test`
+So how to remove those shortcomings? This is were redux will come to play.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Step 1 - Install redux
 
-### `npm run build`
+The first thing to do is installing redux. To do so, execute the following command:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+npm install --save redux react-redux
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+This will add the required dependencies to your project. 
