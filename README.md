@@ -19,6 +19,7 @@ When we look at those components, we can see the following shortcomings:
 So how to remove those shortcomings? This is were redux will come to play.
 
 ## Step 1 - Install redux
+[Commit](https://github.com/MatthiasKainer/react-redux-starter-tutorial/commit/d7e5323fd39790cb1d0e6dc3a1c23d8434c339ca)
 
 The first thing to do is installing redux. To do so, execute the following command:
 
@@ -29,6 +30,7 @@ npm install --save redux react-redux
 This will add the required dependencies to your project. 
 
 ## Step 2 - Add a redux provider, and create the redux machinery
+[Commit](https://github.com/MatthiasKainer/react-redux-starter-tutorial/commit/3f94dcdbdf1c6978e1ca3dd77bdd339ef9e89164)
 
 For Redux to work with your application, you will have to create some first bits and pieces. The very first thing is that you will have to maintain a store. You can think about the store as your application database. Create a file `store.js` and put the following bits in:
 
@@ -130,6 +132,7 @@ We are calling the reducer from the test just as redux would - which means calli
 Now make the test green (you can verify this by running `npm test`) by implementing the reducer.
 
 ## Step 3 - Use redux in the components
+[Commit](https://github.com/MatthiasKainer/react-redux-starter-tutorial/commit/46dfec5eee02421dad1ea51901894c8a2f336015)
 
 We next want to replace the state handling done by the CounterLayout with the redux way. 
 
@@ -227,6 +230,7 @@ Another thing you might have noticed is that we are also exporting the class dir
 The CounterLayout component is much simpler, but it still has to know a lot about it's children. Consider this is more of an migration scenario than a scenario you would want to achieve in a complex application. 
 
 ## Step 4 - Make the components independent
+[Commit](https://github.com/MatthiasKainer/react-redux-starter-tutorial/commit/65b15cc1a0c6d499469a4e403e9e6607c269fa75)
 
 The next bit is to remove the knowledge of the state from the CounterLayout, and move it to the respective components instead. 
 
