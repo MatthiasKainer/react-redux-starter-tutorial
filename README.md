@@ -8,6 +8,70 @@ First however take a look at the existing parts. In our app is a simple counter 
 * **Increment**: A styled button that can trigger an action
 * **CounterLayout**: A layout component that puts everything together and manages the state
 
+```
++---index.js-------------------------------+
+|                                          |
+|  +--App.js----------------------------+  |
+|  |                                    |  |
+|  |                                    |  |
+|  |                                    |  |
+|  |     +--CounterLayout.js------+     |  |
+|  |     |                        |     |  |
+|  |     |    "You clicked "      |     |  |
+|  |     |                        |     |  |
+|  |     |   +-+Counter.js+---+   |     |  |
+|  |     |   |                |   |     |  |
+|  |     |   |  count         |   |     |  |
+|  |     |   |                |   |     |  |
+|  |     |   +----------------+   |     |  |
+|  |     |                        |     |  |
+|  |     |     " times"           |     |  |
+|  |     |                        |     |  |
+|  |     |   +--Increment+----+   |     |  |
+|  |     |   |                |   |     |  |
+|  |     |   |                |   |     |  |
+|  |     |   |                |   |     |  |
+|  |     |   |  onIncrement   |   |     |  |
+|  |     |   |                |   |     |  |
+|  |     |   |                |   |     |  |
+|  |     |   +----------------+   |     |  |
+|  |     |                        |     |  |
+|  |     |                        |     |  |
+|  |     |                        |     |  |
+|  |     +------------------------+     |  |
+|  |                                    |  |
+|  +------------------------------------+  |
+|                                          |
++------------------------------------------+
+```
+> _the layout_
+
+```
++-------------+          +---------------+
+|             |          |               |
+|  Increment  |          |   Counter     |
+|             |          |               |
++--+----------+          +--------^------+
+   |                              |
+   |                              |
+   |                              |
+   |onIncrement                   |counter
+   |                              |
+   |     +-------------------+    |
+   |     |                   |    |
+   +----->   CounterLayout   +----+
+         |                   |
+         +----+--------^-----+
+              |        |
+              |        |
+              |        |
+              +--------+
+               increment
+                counter
+
+```
+> _flow of incrementation_
+
 You can look at the result by running `npm start` (make sure to run `npm install` first).
 
 When we look at those components, we can see the following shortcomings:
@@ -15,6 +79,35 @@ When we look at those components, we can see the following shortcomings:
 1. The CounterLayout has to know about the inner workings of the components - it has to know about the count, how to increase it and how to pass it to the inner components.
 2. The Increment component actually does not really have any power over incrementing anything. It's just called like this.
 3. The Counter is dependent to get passed in the right count from the outer components to display the correct count. Let's assume the requirement of a localized message, that would be wrapped in a *LocalizedCounterMessage* Component, which then holds the Counter. It would be required to get passed the current count from the outer component to pass it to the counter, even though it is not technically required to know about it. 
+
+```
+                                    +---------------+
+                                    |               |
+                                    |   Counter     |
++-------------+                     |               |
+|             |                     +------^--------+
+|  Increment  |                            |
+|             |                            | count
++--+----------+                            |
+   |                                +------+-------+
+   |                                |              |
+   |                                |  Localised   |
+   |onIncrement                     |   Counter    |
+   |                                |              |
+   |     +-------------------+      +------^-------+
+   |     |                   |             |
+   +----->   CounterLayout   +-------------+
+         |                   |    count
+         +----+--------^-----+
+              |        |
+              |        |
+              |        |
+              +--------+
+               increment
+                counter
+
+```
+> _a refactoring requires us to pass the properties through all the children_
 
 So how to remove those shortcomings? This is were redux will come to play.
 
