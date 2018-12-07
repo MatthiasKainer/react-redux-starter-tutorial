@@ -35,6 +35,8 @@ This will add the required dependencies to your project.
 For Redux to work with your application, you will have to create some first bits and pieces. The very first thing is that you will have to maintain a store. You can think about the store as your application database. Create a file `store.js` and put the following bits in:
 
 ```js
+// store.js
+
 import { createStore } from 'redux';
 
 const initialState = {
@@ -54,6 +56,7 @@ This will create us a store with a `counter` of `0` as initial state. To be able
 Create another file called `reducer.js` and add the following bits:
 
 ```js
+// reducer.js
 export default (state, action) => {
     return state;
 }
@@ -62,6 +65,8 @@ export default (state, action) => {
 To have the store know about the reducer, add the following pieces:
 
 ```diff
+ // store.js
+
  import { createStore } from 'redux';
 +import reducer from './reducer';
  
@@ -81,6 +86,8 @@ To have the store know about the reducer, add the following pieces:
 There we are. Unfortunately our application does not know much about it yet, we will have to add the redux provider to the index.js to get it all wired up.
 
 ```diff
+ // index.js
+
  import App from './App';
  import * as serviceWorker from './serviceWorker';
 
@@ -98,6 +105,8 @@ If you start the application up via `npm start` you will notice that nothing cha
 The next thing is to add the increment counter to the reducer. The way the reducer is called can be easiest be seen by looking at tests. Create a new file `reducer.test.js` and put the following content in:
 
 ```js
+// reducer.test.js
+
 import reducer from './reducer';
 
 describe("reducer", () => {
@@ -139,6 +148,8 @@ We next want to replace the state handling done by the CounterLayout with the re
 To connect a component we have to import the connect from redux, and export the connected component instead. For our App.js, this looks like the following:
 
 ```diff
+ // App.js
+
  import React, { Component } from 'react';
 +import { connect } from 'react-redux';
 
@@ -161,6 +172,8 @@ You can think this to look like the following:
 Note that even though the App does not do much with it, without connecting it the children of App would not have access to redux. To connect one component, **all components above this component have to be connected as well**. Also, with connecting it, the tests will fail. As the App.js is tested by rendering the application, we will have to add the same provider as we added to the index.js and the new test will look like this:
 
 ```diff
+ // index.js
+
  import React from 'react';
  import ReactDOM from 'react-dom';
  import App from './App';
@@ -178,6 +191,8 @@ Note that even though the App does not do much with it, without connecting it th
 Let's connect the CounterLayout component to see how we can use it:
 
 ```diff
+// CounterLayout.js
+
  import React, { Component } from 'react';
 +import { connect } from 'react-redux';
 
@@ -233,6 +248,8 @@ There is a major difference on how we call connect now - namely by passing two m
 Another thing you might have noticed is that we are also exporting the class directly. 
 
 ```diff
+// CounterLayout.js
+
 -class CounterLayout extends Component {
 +export class CounterLayout extends Component {
 ```
@@ -240,6 +257,8 @@ Another thing you might have noticed is that we are also exporting the class dir
 This is so that we can change the test to use the *disconnected* component. Also, we can simplify our tests to only test that the component renders correctly if the right properties are passed, instead of testing that the component changes if an action occurs. We already test the result of the function the reducer, and we don't have to test redux on our own as it is already sufficiently tested as we had to in App.js. The change in this test is therefore (except for deleting a lot of tests) mainly:
 
 ```diff
+// App.js
+
 -import CounterLayout from './CounterLayout';
 +import {CounterLayout} from './CounterLayout';
 ```
@@ -258,6 +277,8 @@ The next bit is to remove the knowledge of the state from the CounterLayout, and
 So let's first take the `Counter` component take ownership over their state. Just like before, we want to connect the component via importing the `connect`, and then map the global state to ours. The result would look like this:
 
 ```diff
+ // Counter.js
+
  import React, { Component } from 'react';
 +import { connect } from 'react-redux';
  
@@ -277,6 +298,8 @@ So let's first take the `Counter` component take ownership over their state. Jus
 Also we can clean up the CounterLayout, especially removing the mapStateToProps and passing of properties.
 
 ```diff
+ // CounterLayout.js
+
  export class CounterLayout extends Component {
      render() {
 -        const {count, onIncrement} = this.props;
@@ -304,6 +327,8 @@ Also we can clean up the CounterLayout, especially removing the mapStateToProps 
 If we open the application in the browser we can see the application is still working fine. Let's move the mapDispatchToProps to the Increment Component next.
 
 ```diff
+ // Increment.js
+
  import React, { Component } from 'react';
 +import { connect } from 'react-redux';
  import './Increment.css';
